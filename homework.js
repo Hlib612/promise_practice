@@ -1,14 +1,10 @@
 // Task 1
 
 const delay = (ms) => {
-  return new Promise((resolve, reject) => {
-    if (ms) {
-      setTimeout(() => {
-        resolve(logger(ms));
-      }, ms);
-    } else {
-      reject("Need a delay!");
-    }
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(ms);
+    }, ms);
   });
 };
 
@@ -28,32 +24,32 @@ const users = [
   { name: "Lux", active: false },
 ];
 
-const toggleUserState = (allUsers, userName, callback) => {
+const toggleUserState = (allUsers, userName) => {
   const updatedUsers = allUsers.map((user) =>
     user.name === userName ? { ...user, active: !user.active } : user
   );
   return new Promise((resolve, reject) => {
     if (updatedUsers) {
-      resolve(show(updatedUsers));
+      resolve(updatedUsers);
     } else {
       reject("something went wrong");
     }
   });
 };
 
-const show = (updatedUsers) => console.table(updatedUsers);
+const logger1 = (updatedUsers) => console.table(updatedUsers);
 
 /*
  * Зараз працює так
  */
-// toggleUserState(users, "Mango", logger);
-// toggleUserState(users, "Lux", logger);
+// toggleUserState(users, "Mango", logger1);
+// toggleUserState(users, "Lux", logger1);
 
 /*
  * Повинно працювати так
  */
-toggleUserState(users, "Mango").then(logger);
-toggleUserState(users, "Lux").then(logger);
+toggleUserState(users, "Mango").then(logger1);
+toggleUserState(users, "Lux").then(logger1);
 
 // Task 3
 
@@ -62,18 +58,19 @@ const randomIntegerFromInterval = (min, max) => {
 };
 
 const makeTransaction = (transaction) => {
-  const delay = randomIntegerFromInterval(200, 500);
-  return new Promise((resolve , reject) => {
-     setTimeout(() => {
-    const canProcess = Math.random() > 0.3;
+  return new Promise((resolve, reject) => {
+    const delay = randomIntegerFromInterval(200, 500);
+    setTimeout(() => {
+      const canProcess = Math.random() > 0.3;
 
-    if (canProcess) {
-      resolve(logSuccess(transaction.id, delay));
-    } else {
-      reject(logError(transaction.id));
-    }
-  }, delay);
-  })
+      if (canProcess) {
+        console.log(delay)
+        resolve(transaction.id, delay);
+      } else {
+        reject(transaction.id);
+      }
+    }, delay);
+  });
 };
 
 const logSuccess = (id, time) => {
